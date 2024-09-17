@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lab: ETL theo luồng với Glue on Bao An Thai</title>
+    <link>http://baoandev.github.io/vi/2-realtime/2.3-labglue/</link>
+    <description>Recent content in Lab: ETL theo luồng với Glue on Bao An Thai</description>
+    <generator>Hugo</generator>
+    <language>vi</language>
+    <atom:link href="http://baoandev.github.io/vi/2-realtime/2.3-labglue/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

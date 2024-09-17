@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.127.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Data preparation with Glue DataBrew :: Bao An Thai</title>
+
+    
+    <link href="/css/nucleus.css?1726578020" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1726578020" rel="stylesheet">
+    <link href="/css/hybrid.css?1726578020" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1726578020" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1726578020" rel="stylesheet">
+    <link href="/css/auto-complete.css?1726578020" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1726578020" rel="stylesheet">
+    <link href="/css/theme.css?1726578020" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1726578020" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1726578020" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1726578020"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/7-gluedatabrew/7.2-gluedatabrew/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1726578020"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1726578020"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/baoandev.github.io\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1726578020"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-introduce/" title="Introduction" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/1-introduce/">
+           <b> 1. </b> Introduction
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-realtime/" title="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink " class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-realtime/">
+           <b> 2. </b> Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink 
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-realtime/2.1-realtimesetup/" title="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink Prelab setup" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-realtime/2.1-realtimesetup/">
+           <b> 2.1 </b> Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink Prelab setup
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-realtime/2.2-lab/" title="Lab: Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-realtime/2.2-lab/">
+           <b> 2.2 </b> Lab: Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-realtime/2.3-labglue/" title="Lab: Streaming ETL with Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/2-realtime/2.3-labglue/">
+           <b> 2.3 </b> Lab: Streaming ETL with Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-ingestion/" title="Ingestion with DMS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-ingestion/">
+           <b> 3. </b> Ingestion with DMS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-ingestion/3.1-skipdms/" title="Option 3: Skip DMS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/3-ingestion/3.1-skipdms/">
+           <b> 3.1 </b> Option 3: Skip DMS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transformingdatawithglue/" title="Transforming data with Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-transformingdatawithglue/">
+           <b> 4. </b> Transforming data with Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-transformingdatawithglue/4.1-datavalidationandetl/" title="Data Validation and ETL" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/4-transformingdatawithglue/4.1-datavalidationandetl/">
+           <b> 4.1 </b> Data Validation and ETL
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-queryandvisualize/" title="Query and Visualize" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/5-queryandvisualize/">
+           <b> 5. </b> Query and Visualize
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-queryandvisualize/5.1-athenaandquicksight/" title="Athena and Quicksight" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/5-queryandvisualize/5.1-athenaandquicksight/">
+           <b> 5.1 </b> Athena and Quicksight
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-gluedatabrew/" title="Glue DataBrew" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/7-gluedatabrew/">
+           <b> 6. </b> Glue DataBrew
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-gluedatabrew/7.1-prelab/" title="DataBrew Prelab" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/7-gluedatabrew/7.1-prelab/">
+           <b> 6.1 </b> DataBrew Prelab
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-gluedatabrew/7.2-gluedatabrew/" title="Data preparation with Glue DataBrew" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/7-gluedatabrew/7.2-gluedatabrew/">
+           <b> 6.2 </b> Data preparation with Glue DataBrew
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://awsstudygroup.com/"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"><i class='fab fa-facebook'></i> AWS Study Group - FB Group</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="http://baoandev.github.io/7-gluedatabrew/7.2-gluedatabrew/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="http://baoandev.github.io/vi/7-gluedatabrew/7.2-gluedatabrew/">Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+    <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter" border="0" /></a> <br>
+    <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter" border="0" />
+
+</left>
+<left>
+    <br>
+    <br>
+    <b> Last Updated </b> <br>
+    <i><font color=orange>18-08-2024</font></i>
+</left>
+<left>
+    <br>
+    <br>
+    <b> Team </b> <br>
+
+    <i> 
+        <a href="https://www.linkedin.com/in/an-thai-6a1b16316/"  style="color:orange">Bảo An </a>
+    </i>
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Data with AWS</a> > <a href='/7-gluedatabrew/'>Glue DataBrew</a> > Data preparation with Glue DataBrew
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Data preparation with Glue DataBrew
+            </h1>
+          
+
+        
+
+
+
+	<h4 id="tasks-will-be-completed-in-this-lab">Tasks will be completed in this Lab:</h4>
+<ul>
+<li>Create a Glue DataBrew project to explore a dataset</li>
+<li>Connect a sample dataset from S3</li>
+<li>Explore the dataset in Glue DataBrew</li>
+<li>Generate a rich data profile for the dataset</li>
+<li>Create a recipe and job to clean and normalize data in the dataset</li>
+</ul>
+<h4 id="creating-a-project">Creating a project</h4>
+<ol>
+<li>
+<p>Navigate to the AWS Glue DataBrew service</p>
+</li>
+<li>
+<p>You can click on Create project on DataBrew console or select Projects
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0003-databrew.png"></p>
+</li>
+<li>
+<p>Click Create project</p>
+</li>
+<li>
+<p>In the Project details section, enter covid-states-daily as the project name
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0004-databrew.png"></p>
+</li>
+<li>
+<p>In the Select a dataset section, select New dataset and enter covid-states-daily-stats
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0005-databrew.png"></p>
+</li>
+<li>
+<p>In the Connect to a new dataset section, select Amazon S3 under &ldquo;Data lake/data store&rdquo;</p>
+</li>
+</ol>
+<p>Enter the DatasetS3Path that is available in Workshop Studio Dashboard or outputs section of your CloudFormation stack
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0006-databrew.png"></p>
+<ol start="7">
+<li>
+<p>In the Sampling section, leave the default configuration values
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0007-databrew.png"></p>
+</li>
+<li>
+<p>In the Permissions section, select the role name like databrew-lab-DataBrewLabRole-xxxxx from the drop-down list. This is the same as specified by the Value of the Key DataBrewLabRole in the CloudFormation Outputs tab.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0008-databrew.png"></p>
+</li>
+<li>
+<p>Click Create project
+Glue DataBrew will create the project, this may take a few minutes.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/0009-databrew.png"></p>
+</li>
+</ol>
+<h4 id="exploring-the-dataset">Exploring the dataset</h4>
+<ol>
+<li>When the project has been created, you will be presented with the Grid view. This is the default view, where a sample of the data is shown in tabular format.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00010-databrew.png"></li>
+</ol>
+<p>The Grid view shows</p>
+<ul>
+<li>Columns in the dataset</li>
+<li>Data type of each column</li>
+<li>Summary of the range of values that have been found</li>
+<li>Statistical distribution for numerical columns</li>
+</ul>
+<ol start="2">
+<li>
+<p>Click on the Schema tab</p>
+<p>The Schema view shows the schema that has been inferred from the dataset. In schema view, you can see statistics about the data values in each column.</p>
+<p>In the Schema view, you can</p>
+<ul>
+<li>Select the checkbox next to a column to view the summary of statistics for the column values</li>
+<li>Show/Hide columns</li>
+<li>Rename columns</li>
+<li>Change the data type of columns</li>
+<li>Rearrange the column order by dragging and dropping the columns</li>
+</ul>
+</li>
+<li>
+<p>Click on the Profile tab</p>
+<p>In the Profile view, you can run a data profile job to examine and collect statistical summaries about the data. A data profile is an assessment in terms of structure, content, relationships, and derivation.</p>
+<p>Click on Run data profile</p>
+<p>In the Job details and Job run sample panels, leave the default values.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00011-databrew.png"></p>
+<p>In the Job output settings section, select the S3 bucket as specified by the Value of the Key DataBrewOutputS3Bucket in the CloudFormation Outputs tab. It should be with the name like databrew-lab-databrewoutputs3bucket-xxxxx and also specify a prefix name for example data-profile. Include / at the end of the prefix for example /data-profile/ as shown below.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00012-databrew.png"></p>
+<p>In the Permissions section, select the IAM role with the name like databrew-lab-DataBrewLabRole-xxxxx or as specified by the Value of the Key DataBrewLabRole in the CloudFormation Outputs tab.</p>
+<p>Leave all other settings as the default values</p>
+<p>Click Create and run job</p>
+</li>
+</ol>
+<p>The data profile job takes approximately 5 minutes complete.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00013-databrew.png"></p>
+<ol start="4">
+<li>
+<p>Click on Jobs from the menu on the left hand side of the DataBrew console.</p>
+<p>Click on Profile jobs tab to view a list of profile jobs.</p>
+<p>You can see the status of your profile job on this screen.</p>
+<p>When the profile job has successfully completed, click on View data profile
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00014-databrew.png"></p>
+<p>This will display the Data profile overview
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00015-databrew.png"></p>
+<p>You can also access the data profile from the Profile tab in the project.</p>
+<p>The data profile shows a summary of the rows and columns in the dataset, how many columns and rows are valid, and correlations between columns.</p>
+</li>
+<li>
+<p>Click on the Column statistics tab to view a column-by-column breakdown of the data values.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00016-databrew.png"></p>
+</li>
+</ol>
+<h4 id="preparing-the-dataset">Preparing the dataset</h4>
+<p>In this section, we will apply the following transformations to the dataset.</p>
+<ul>
+<li>Convert the date column from integer to string</li>
+<li>Split the date column into three new columns (year, month, day) to partition the data by these columns</li>
+<li>Fill the missing values in the probableCases column with 0</li>
+<li>Map the values of the dataQualityGrade column to a numerical value</li>
+</ul>
+<ol>
+<li>
+<p>Navigate back to the covid-states-daily project grid view by clicking on PROJECTS to get there.</p>
+</li>
+<li>
+<p>DataBrew has inferred data type of the date column as integer. We will convert the data type of the date column to string.</p>
+<p>Click on the # icon next to the date column name and select string
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00017-databrew.png"></p>
+<p>Click on Apply at the far right.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00018-databrew.png"></p>
+<p>Note that the transformation is added to the recipe at the right.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00019-databrew.png"></p>
+</li>
+<li>
+<p>We will duplicate the date column first before splitting it into year, month, day columns, as the original column will be deleted by this transformation.</p>
+<p>Select the &hellip; at the top of the date column.</p>
+<p>From the pop-up menu, scroll to the bottom and select Duplicate
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00020-databrew.png"></p>
+</li>
+</ol>
+<p>Leave the default settings in the Duplicate column dialog
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00021-databrew.png"></p>
+<p>Click Apply</p>
+<p>A copy of the date column is created with the name date_copy. Note that the duplicate column transformation is added as a step to the recipe at the right.</p>
+<ol start="4">
+<li>
+<p>Let&rsquo;s split the date_copy column into year, month, day columns.</p>
+<p>Select the &hellip; at the top of the date_copy column.</p>
+<p>Select Split column &ndash;&gt; At positions from beginning
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00022-databrew.png"></p>
+</li>
+</ol>
+<p>In the Split column dialog, enter 4 for Position from the beginning to split out the year. Leave all other default settings.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00023-databrew.png"></p>
+<p>In the Split column dialog, scroll down and click Preview changes to see how the column is split. Note that the date_copy column is marked for deletion.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00024-databrew.png"></p>
+<p>Click Apply</p>
+<ol start="5">
+<li>
+<p>Next, split the date_copy_2 column into month and day.</p>
+<p>Same way as you did above in (4). In the Split column dialog, enter 2 for Position from the beginning to split out the month, and day. Leave all other default settings.</p>
+<p>The result should look like the screenshot below.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00025-databrew.png"></p>
+</li>
+<li>
+<p>Let&rsquo;s rename the new columns to year, month, day.</p>
+<p>Click on Rename from the &hellip; at the top right of the date_copy_1 column. Enter year as the new column name, and click Apply
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00026-databrew.png"></p>
+<p>Rename the other two new columns - date_copy_2_1 and date_copy_2_2 - to month and day respectively.</p>
+<p>The result should look like the following.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00027-databrew.png"></p>
+</li>
+<li>
+<p>The probableCases column has some missing values. We will set these missing values to 0.</p>
+<p>To navigate to the probableCases column, click on the Columns drop-down list at the top, enter probableCases in the search field and click View.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00028-databrew.png"></p>
+<p>Click on the &hellip; from the top right of probableCases column and select Remove or fill missing values &ndash;&gt; Fill with custom value
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00029-databrew.png"></p>
+<p>Enter 0 as the Custom value and click Apply
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00030-databrew.png"></p>
+</li>
+<li>
+<p>Map the values of the dataQualityGrade column to numerical values.</p>
+<p>To navigate to the dataQualityGrade column, click on the columns drop-down list at the top, enter dataQualityGrade in the search field and click View.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00031-databrew.png"></p>
+<p>Click on the &hellip; from the top right of dataQualityGrade column and select Categorical mapping
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00032-databrew.png"></p>
+</li>
+</ol>
+<p>In the Categorically map column dialog</p>
+<ul>
+<li>
+<p>Select the option Map all values</p>
+</li>
+<li>
+<p>Select Map values to numeric values</p>
+</li>
+<li>
+<p>Map the current dataQualityGrade value to the new value as follows
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00033-databrew.png"></p>
+<p>Leave all other settings as default. Click Apply</p>
+<p>After this transform, the new column dataQualityGrade_mapped is of type double, convert this column to integer. By clicking on the # on top left of the new column dataQualityGrade_mapped. Click on Apply on the far right to confirm changes.</p>
+</li>
+</ul>
+<ol start="9">
+<li>
+<p>You are now ready to publish the recipe so that it can be used in DataBrew jobs. The final recipe looks like the following.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00034-databrew.png"></p>
+<p>Click on the Publish button at the top of the recipe.</p>
+<p>Optionally enter a version description, and click Publish
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00035-databrew.png"></p>
+</li>
+</ol>
+<p>The recipe is published as Version 1.0. DataBrew applies a version number when a recipe is published.</p>
+<h4 id="creating-a-databrew-job">Creating a DataBrew job</h4>
+<ol>
+<li>
+<p>Click on Jobs from the menu on the left hand side of the DataBrew console.</p>
+<p>On the Recipe jobs tab, click on Create job</p>
+<p>Enter covid-states-daily-prep for the job name</p>
+<p>Select Create a recipe job</p>
+<p>Select the covid-states-daily-stats dataset</p>
+<p>Select the covid-states-daily-recipe.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00036-databrew.png"></p>
+</li>
+</ol>
+<p>In the Job output settings section set</p>
+<ul>
+<li>Output to Amazon S3.</li>
+<li>File type to CSV.</li>
+<li>Delimiter to Comma(,).</li>
+<li>Compression to None.</li>
+<li>S3 bucket owners&rsquo;s Account to Current AWS account.</li>
+<li>S3 location as specified by the Value of the Key DataBrewOutputS3Bucket in the CloudFormation Outputs tab. It should be with the name like databrew-lab-databrewoutputs3bucket-xxxxx and also specify a prefix name for example job-outputs. The S3 location should look something like s3://databrew-lab-databrewoutputs3bucket-xxxxx/job-outputs/.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00037-databrew.png"></li>
+</ul>
+<p>Click on Settings on the right to</p>
+<ul>
+<li>
+<p>Select Create a new folder for each job run.</p>
+</li>
+<li>
+<p>Under Custom partition by column values in the File partitioning section click on Enabled. Then search and Add year, month and day as Columns to partition by. This will partition the data in the output folder by year, month and day. And click on Save.</p>
+<p><img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00038-databrew.png"></p>
+<p>In the Permissions section, select the IAM role with the name like databrew-lab-DataBrewLabRole-xxxxx or as specified by the Value of the Key DataBrewLabRole in the CloudFormation Outputs tab.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00039-databrew.png"></p>
+<p>Click Create and run job</p>
+</li>
+</ul>
+<ol start="2">
+<li>The DataBrew job is created and the job status is Running
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00040-databrew.png"></li>
+</ol>
+<p>Wait until the job has completed successfully (approx. 4 minutes)
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00041-databrew.png"></p>
+<p>Click on the link to the job output, and verify that the output files are partitioned in the S3 bucket</p>
+<h4 id="viewing-data-lineage">Viewing data lineage</h4>
+<ol>
+<li>
+<p>In DataBrew, navigate back to the covid-states-daily project.
+Click on Lineage at the top right.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00042-databrew.png"></p>
+<p>This view shows the origin of the data and the transformation steps that the data has been through.
+<img alt="Data preparation with Glue DataBrew" src="/images/7.databrew/00043-databrew.png"></p>
+</li>
+</ol>
+<h5 id="congratulations-you-have-completed-the-databrew-lab">Congratulations, you have completed the DataBrew lab.</h5>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/7-gluedatabrew/7.1-prelab/" title="DataBrew Prelab"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/7-gluedatabrew/7.1-prelab/" title="DataBrew Prelab" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1726578020"></script>
+    <script src="/js/perfect-scrollbar.min.js?1726578020"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1726578020"></script>
+    <script src="/js/jquery.sticky.js?1726578020"></script>
+    <script src="/js/featherlight.min.js?1726578020"></script>
+    <script src="/js/highlight.pack.js?1726578020"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1726578020"></script>
+    <script src="/js/learn.js?1726578020"></script>
+    <script src="/js/hugo-learn.js?1726578020"></script>
+
+    <link href="/mermaid/mermaid.css?1726578020" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1726578020"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

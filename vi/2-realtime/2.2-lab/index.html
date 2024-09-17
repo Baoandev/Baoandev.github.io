@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="vi" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.127.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink :: Bao An Thai</title>
+
+    
+    <link href="/css/nucleus.css?1726578021" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1726578021" rel="stylesheet">
+    <link href="/css/hybrid.css?1726578021" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1726578021" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1726578021" rel="stylesheet">
+    <link href="/css/auto-complete.css?1726578021" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1726578021" rel="stylesheet">
+    <link href="/css/theme.css?1726578021" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1726578021" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1726578021" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1726578021"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/vi/2-realtime/2.2-lab/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1726578021"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1726578021"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/baoandev.github.io\/\/vi";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1726578021"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/1-introduce/" title="Giới thiệu" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/1-introduce/">
+           <b> 1. </b> Giới thiệu
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/" title="Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/vi/2-realtime/">
+           <b> 2. </b> Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/2.1-realtimesetup/" title="Cài đặt trước phòng thí nghiệm phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-realtime/2.1-realtimesetup/">
+           <b> 2.1 </b> Cài đặt trước phòng thí nghiệm phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/2.2-lab/" title="Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/vi/2-realtime/2.2-lab/">
+           <b> 2.2 </b> Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/2.3-labglue/" title="Lab: ETL theo luồng với Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-realtime/2.3-labglue/">
+           <b> 2.3 </b> Lab: ETL theo luồng với Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/3-ingestion/" title="Nhập dữ liệu với DMS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/3-ingestion/">
+           <b> 3. </b> Nhập dữ liệu với DMS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/3-ingestion/3.1-skipdms/" title="Lựa chọn 3: Bỏ qua DMS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/3-ingestion/3.1-skipdms/">
+           <b> 3.1 </b> Lựa chọn 3: Bỏ qua DMS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/4-transformingdatawithglue/" title="Chuyển đổi dữ liệu với Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/4-transformingdatawithglue/">
+           <b> 4. </b> Chuyển đổi dữ liệu với Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/4-transformingdatawithglue/4.1-datavalidationandetl/" title="Data Validation and ETL" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/4-transformingdatawithglue/4.1-datavalidationandetl/">
+           <b> 4.1 </b> Data Validation and ETL
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-queryandvisualize/" title="Truy vấn và Trực quan hóa" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-queryandvisualize/">
+           <b> 5. </b> Truy vấn và Trực quan hóa
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-queryandvisualize/5.1-athenaandquicksight/" title="Athena and Quicksight" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-queryandvisualize/5.1-athenaandquicksight/">
+           <b> 5.1 </b> Athena and Quicksight
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/7-gluedatabrew/" title="Glue DataBrew" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/7-gluedatabrew/">
+           <b> 6. </b> Glue DataBrew
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/7-gluedatabrew/7.1-prelab/" title="DataBrew Prelab" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/7-gluedatabrew/7.1-prelab/">
+           <b> 6.1 </b> DataBrew Prelab
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/7-gluedatabrew/7.2-gluedatabrew/" title="Chuẩn bị dữ liệu với Glue DataBrew" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/7-gluedatabrew/7.2-gluedatabrew/">
+           <b> 6.2 </b> Chuẩn bị dữ liệu với Glue DataBrew
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://awsstudygroup.com/"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"><i class='fab fa-facebook'></i> AWS Study Group - Nhóm FB</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="http://baoandev.github.io/2-realtime/2.2-lab/">English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="http://baoandev.github.io/vi/2-realtime/2.2-lab/" selected>Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+    <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter" border="0" /></a> <br>
+    <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter" border="0" />
+
+</left>
+<left>
+    <br>
+    <br>
+    <b> Last Updated </b> <br>
+    <i><font color=orange>18-08-2024</font></i>
+</left>
+<left>
+    <br>
+    <br>
+    <b> Team </b> <br>
+
+    <i> 
+        <a href="https://www.linkedin.com/in/an-thai-6a1b16316/"  style="color:orange">Bảo An </a>
+    </i>
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/vi/'>Dữ liệu cùng AWS </a> > <a href='/vi/2-realtime/'>Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink</a> > Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+            </h1>
+          
+
+        
+
+
+
+	<h4 id="giới-thiệu">Giới thiệu</h4>
+<p>Hướng dẫn này giúp bạn hoàn thành việc phát hiện bất thường trong luồng nhấp chuột theo thời gian thực bằng cách sử dụng Dịch vụ Quản lý Amazon cho Apache Flink.</p>
+<p>Phân tích lưu lượng nhật ký web để có được thông tin chi tiết nhằm đưa ra quyết định kinh doanh thường được thực hiện bằng cách xử lý theo lô. Mặc dù hiệu quả, phương pháp này dẫn đến phản hồi chậm trước các xu hướng mới nổi và hoạt động của người dùng. Có những giải pháp xử lý dữ liệu trong thời gian thực sử dụng công nghệ xử lý luồng và lô nhỏ, nhưng chúng có thể phức tạp để thiết lập và duy trì. Dịch vụ Quản lý Amazon cho Apache Flink là một dịch vụ quản lý giúp dễ dàng nhận dạng và phản ứng với những thay đổi trong hành vi dữ liệu theo thời gian thực.</p>
+<h4 id="các-bước">Các bước</h4>
+<ul>
+<li>Thiết lập Ứng dụng Amazon Analytics Studio thông qua triển khai stack CloudFormation</li>
+<li>Tạo lưu lượng truy cập trang web theo thời gian thực bằng Amazon Kinesis Data Generator (KDG)</li>
+<li>Thực hiện Phân tích Dữ liệu theo thời gian thực</li>
+<li>Dọn dẹp Môi trường</li>
+<li>Phụ lục: Kịch bản phát hiện bất thường</li>
+</ul>
+<p>Trong phần thiết lập trước phòng lab Kinesis, bạn đã hoàn thành các yêu cầu tiên quyết cho phòng lab này. Trong phòng lab này, bạn sẽ tạo một pipeline cho Dịch vụ Quản lý Amazon cho Apache Flink.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00015-labrealtime.png"></p>
+<h4 id="thiết-lập-ứng-dụng-amazon-analytics-studio-thông-qua-triển-khai-stack-cloudformation">Thiết lập Ứng dụng Amazon Analytics Studio thông qua triển khai stack CloudFormation</h4>
+<ol>
+<li>
+<p>Nhấp vào liên kết Deploy to AWS ở đây để thiết lập cơ sở hạ tầng hội thảo trước phòng lab:
+<a href="https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?templateURL=https://aws-bigdata-blog.s3.amazonaws.com/DE-ID-KDA-Lab/1-Lab-Kinesis-Clickstream_CFN.yaml&stackName=kda-flink-pre-lab&param_FlinkVersion=1.15.4&param_Release=master&param_GlueDatabaseName=prelab_kda_db">https://console.aws.amazon.com/cloudformation/home?#/stacks/quickcreate?templateURL=https://aws-bigdata-blog.s3.amazonaws.com/DE-ID-KDA-Lab/1-Lab-Kinesis-Clickstream_CFN.yaml&stackName=kda-flink-pre-lab&param_FlinkVersion=1.15.4&param_Release=master&param_GlueDatabaseName=prelab_kda_db</a></p>
+</li>
+<li>
+<p>Liên kết trên sẽ mở biểu mẫu “Quick create stack”, vui lòng chấp nhận các tham số mặc định, chọn hộp kiểm để xác nhận tạo vai trò IAM mới và chọn Create Stack để chạy Mẫu CloudFormation của Amazon.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00016-labrealtime.png"></p>
+</li>
+<li>
+<p>Stack sẽ tạo sáu Amazon Kinesis Data Streams trong bảng điều khiển Amazon Kinesis:</p>
+<p>a. tickerstream – luồng thô để gửi lưu lượng ban đầu</p>
+<p>b. clickstream – ghi lại số lần nhấp chuột</p>
+<p>c. impressionstream – ghi lại số lần hiển thị</p>
+<p>d. ctrstream – ghi lại tỷ lệ nhấp chuột</p>
+<p>e. destinationstream – ghi lại các điểm số bất thường</p>
+<p>f. anomalydetectionstream – ghi lại các bản ghi có điểm số bất thường lớn hơn 2
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00017-labrealtime.png"></p>
+</li>
+<li>
+<p>Mẫu cũng sẽ tạo một ứng dụng Amazon Analytics Studio có tên kda-flink-prelab-RealtimeApplicationNotebook trong Amazon Kinesis Application Console → Tab Studio. Chúng ta sẽ viết Sổ tay Studio tương tác trong Apache Zeppelin để phân tích dữ liệu thời gian thực.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00018-labrealtime.png"></p>
+</li>
+<li>
+<p>Chạy ứng dụng Studio bằng cách chọn kda-flink-prelab-RealtimeApplicationNotebook dưới tab Studio. Chọn “Run” một lần nữa trên màn hình tiếp theo.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00019-labrealtime.png"></p>
+</li>
+</ol>
+<p><img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00020-labrealtime.png"></p>
+<h4 id="tạo-lưu-lượng-truy-cập-trang-web-theo-thời-gian-thực-bằng-amazon-kinesis-data-generator-kdg">Tạo lưu lượng truy cập trang web theo thời gian thực bằng Amazon Kinesis Data Generator (KDG)</h4>
+<ol>
+<li>
+<p>Điều hướng đến bảng điều khiển Amazon CloudFormation trong tài khoản AWS của bạn, nhấp vào stack Kinesis-pre-lab được tạo trong phần thiết lập Prelab Phân tích Dữ liệu Streaming.</p>
+</li>
+<li>
+<p>Đi đến tab Outputs của stack để lấy liên kết Kinesis Data Generator như hình dưới.</p>
+</li>
+<li>
+<p>Mở hai phiên đồng thời của giao diện KDG trong trình duyệt của bạn. Đăng nhập bằng tên người dùng và mật khẩu bạn đã nhập trong mẫu CloudFormation khi tạo phần thiết lập Prelab Phân tích Dữ liệu Streaming.</p>
+<p>a. Chúng ta muốn tạo nhiều tin nhắn nhấp chuột hơn tin nhắn hiển thị. Vì vậy, trong phiên đầu tiên, gửi tin nhắn hiển thị với tốc độ một tin nhắn mỗi giây trong 30 giây đến tickerstream, nội dung tin nhắn là:</p>
+<p>{&ldquo;browseraction&rdquo;:&ldquo;Impression&rdquo;, &ldquo;site&rdquo;: &ldquo;<a href="https://www.mysite.com">https://www.mysite.com</a>&rdquo;}
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00021-labrealtime.png"></p>
+<p>b. Sau đó, trong phiên thứ hai, gửi tin nhắn nhấp chuột với tốc độ 5 tin nhắn mỗi giây trong 30 giây đến tickerstream, nội dung tin nhắn là:</p>
+<p>{&ldquo;browseraction&rdquo;:&ldquo;Click&rdquo;, &ldquo;site&rdquo;: &ldquo;<a href="https://www.mysite.com">https://www.mysite.com</a>&rdquo;}
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00022-labrealtime.png"></p>
+<p>c. Bạn có thể xem số lượng tin nhắn được gửi đến luồng dữ liệu khi bạn bắt đầu gửi tin nhắn.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00023-labrealtime.png"></p>
+<p>d. Sau 30 giây, vui lòng dừng việc gửi cả tin nhắn nhấp chuột và hiển thị.</p>
+</li>
+</ol>
+<h4 id="thực-hiện-phân-tích-dữ-liệu-theo-thời-gian-thực">Thực hiện Phân tích Dữ liệu theo thời gian thực</h4>
+<ol>
+<li>
+<p>Điều hướng đến bảng điều khiển Amazon Kinesis Application. Dưới tab Studio, chọn kda-prelab-template-RealtimeApplicationNotebook. Chọn “Open in Apache Zeppelin”.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00024-labrealtime.png"></p>
+</li>
+<li>
+<p>Trên bảng điều khiển Apache Zeppelin, chọn Create new note. Đặt tên cho sổ tay là kda_interactive_notebook.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00025-labrealtime.png">
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00026-labrealtime.png"></p>
+</li>
+<li>
+<p>Bây giờ hãy thực hiện phân tích tương tác theo thời gian thực với luồng dữ liệu Kinesis. Chúng ta sẽ:</p>
+<p>i. Tạo bảng Flink bằng cách sử dụng các truy vấn SQL của Flink.</p>
+<p>ii. Sử dụng truy vấn SQL của Flink để chuyển đổi và tạo luồng dữ liệu mới theo thời gian thực.</p>
+<p>iii. Thực hiện phát hiện bất thường bằng Flink User Defined Function và kích hoạt email thông báo bất thường theo thời gian thực.</p>
+<p>iv. Các kịch bản có sẵn tại đây.</p>
+<p><a href="https://docs.google.com/document/d/1PUBiZUpPkydsek_Navj8f3mskMqE8e_6mjp_rglkq28/edit?usp=sharing">https://docs.google.com/document/d/1PUBiZUpPkydsek_Navj8f3mskMqE8e_6mjp_rglkq28/edit?usp=sharing</a></p>
+<p>v. Một sổ tay cũng có sẵn tại đây có thể được tải xuống và nhập qua bảng điều khiển Apache Zeppelin.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00027-labrealtime.png"></p>
+<p>vi. Bạn có thể mở sổ tay và chạy các đoạn mã theo thứ tự.</p>
+<p>vii. Vui lòng tham khảo logic phát hiện bất thường trong hình dưới đây trước khi bắt đầu thực hiện các bước còn lại.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00028-labrealtime.png"></p>
+</li>
+<li>
+<p>Chạy các đoạn mã tạo bảng.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00029-labrealtime.png"></p>
+</li>
+<li>
+<p>Hàm Người dùng Định nghĩa (UDF) thực hiện phát hiện bất thường theo thời gian thực bằng thuật toán Random Cut Forest. Chạy bước #2.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00030-labrealtime.png"></p>
+</li>
+<li>
+<p>Bạn có thể xem dữ liệu thời gian thực từ các lượt truy cập trang web bằng cách chạy truy vấn ở Bước #3.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00031-labrealtime.png"></p>
+</li>
+<li>
+<p>Tạo impressionstream bằng cách lọc tin nhắn từ tickerstream.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00032-labrealtime.png"></p>
+</li>
+<li>
+<p>Tạo clickstream bằng cách lọc tin nhắn từ tickerstream.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00033-labrealtime.png"></p>
+</li>
+<li>
+<p>Tính toán Tỷ lệ nhấp chuột (CTR) và điền vào ctrstream.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00034-labrealtime.png"></p>
+</li>
+<li>
+<p>Bạn có thể xem Tỷ lệ nhấp chuột theo thời gian thực bằng cách thực hiện Bước #7.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00035-labrealtime.png"></p>
+</li>
+<li>
+<p>Sử dụng UDF (Random Cut Forest) để tạo điểm số bất thường.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00036-labrealtime.png"></p>
+</li>
+<li>
+<p>Điền vào anomalydetectionstream bằng cách thực hiện Bước #9.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00037-labrealtime.png"></p>
+</li>
+<li>
+<p>Bây giờ kiểm tra các điểm số bất thường từ thuật toán Random Cut Forest theo thời gian thực.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00038-labrealtime.png"></p>
+</li>
+<li>
+<p>Bạn sẽ bắt đầu nhận được thông báo trong email của mình khi phát hiện bất thường:
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00039-labrealtime.png"></p>
+</li>
+<li>
+<p>Nếu bạn không nhận được email thông báo bất thường lần đầu tiên:</p>
+<p>i. Mở hai phiên đồng thời của giao diện KDG trong trình duyệt của bạn một lần nữa.</p>
+<p>ii. Trong phiên đầu tiên, gửi tin nhắn hiển thị với tốc độ một tin nhắn mỗi giây đến tickerstream, nội dung tin nhắn là:</p>
+<p>{&ldquo;browseraction&rdquo;:&ldquo;Impression&rdquo;, &ldquo;site&rdquo;:&ldquo;<a href="https://www.mysite.com">https://www.mysite.com</a>&rdquo;}</p>
+<p>iii. Trong phiên thứ hai, gửi tin nhắn nhấp chuột với tốc độ năm tin nhắn mỗi giây đến tickerstream, nội dung tin nhắn là:</p>
+<p>{&ldquo;browseraction&rdquo;:&ldquo;Click&rdquo;, &ldquo;site&rdquo;:&ldquo;<a href="https://www.mysite.com">https://www.mysite.com</a>&rdquo;}</p>
+<p>iv. Dừng gửi tin nhắn sau 30-40 giây.</p>
+<p>v. Bây giờ trên Sổ tay Apache Zeppelin, lặp lại các bước 3 đến 10 và bạn sẽ bắt đầu nhận được thông báo email từ lần thử thứ hai.</p>
+</li>
+</ol>
+<h4 id="dọn-dẹp-môi-trường">Dọn dẹp Môi trường</h4>
+<ol>
+<li>
+<p>Sau khi hoàn thành phòng lab, nhấp vào Actions → Stop Application để dừng ứng dụng của bạn và tránh việc nhận quá nhiều tin nhắn SMS và email.</p>
+</li>
+<li>
+<p>Nếu bạn muốn xóa toàn bộ stack tài nguyên, điều hướng đến Amazon CloudFormation Console → Stacks, chọn kda-flink-pre-lab và nhấp vào Delete để xóa stack. Bước này sẽ dọn dẹp tất cả các tài nguyên đã tạo trước đó.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00040-labrealtime.png"></p>
+</li>
+<li>
+<p>Chọn Delete trên màn hình tiếp theo.
+<img alt="Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink" src="/images/2.realtime/00041-labrealtime.png"></p>
+</li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/vi/2-realtime/2.1-realtimesetup/" title="Cài đặt trước phòng thí nghiệm phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/vi/2-realtime/2.3-labglue/" title="Lab: ETL theo luồng với Glue" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1726578021"></script>
+    <script src="/js/perfect-scrollbar.min.js?1726578021"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1726578021"></script>
+    <script src="/js/jquery.sticky.js?1726578021"></script>
+    <script src="/js/featherlight.min.js?1726578021"></script>
+    <script src="/js/highlight.pack.js?1726578021"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1726578021"></script>
+    <script src="/js/learn.js?1726578021"></script>
+    <script src="/js/hugo-learn.js?1726578021"></script>
+
+    <link href="/mermaid/mermaid.css?1726578021" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1726578021"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

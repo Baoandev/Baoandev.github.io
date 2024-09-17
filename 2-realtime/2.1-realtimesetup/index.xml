@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink Prelab setup on Bao An Thai</title>
+    <link>http://baoandev.github.io/2-realtime/2.1-realtimesetup/</link>
+    <description>Recent content in Real-Time Clickstream Anomaly Detection with Amazon Managed Service for Apache Flink Prelab setup on Bao An Thai</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <atom:link href="http://baoandev.github.io/2-realtime/2.1-realtimesetup/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

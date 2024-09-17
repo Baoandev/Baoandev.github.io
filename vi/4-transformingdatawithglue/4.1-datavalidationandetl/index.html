@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="vi" class="js csstransforms3d">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.127.0">
+    <meta name="description" content="">
+<meta name="author" content="journeyoftheaverageguy@gmail.com">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Data Validation and ETL :: Bao An Thai</title>
+
+    
+    <link href="/css/nucleus.css?1726578021" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1726578021" rel="stylesheet">
+    <link href="/css/hybrid.css?1726578021" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1726578021" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1726578021" rel="stylesheet">
+    <link href="/css/auto-complete.css?1726578021" rel="stylesheet">
+    <link href="/css/atom-one-dark-reasonable.css?1726578021" rel="stylesheet">
+    <link href="/css/theme.css?1726578021" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1726578021" rel="stylesheet">
+    
+    <link href="/css/theme-workshop.css?1726578021" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1726578021"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/vi/4-transformingdatawithglue/4.1-datavalidationandetl/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1726578021"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1726578021"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/baoandev.github.io\/\/vi";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1726578021"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/1-introduce/" title="Giới thiệu" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/1-introduce/">
+           <b> 1. </b> Giới thiệu
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/" title="Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-realtime/">
+           <b> 2. </b> Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/2.1-realtimesetup/" title="Cài đặt trước phòng thí nghiệm phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-realtime/2.1-realtimesetup/">
+           <b> 2.1 </b> Cài đặt trước phòng thí nghiệm phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/2.2-lab/" title="Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-realtime/2.2-lab/">
+           <b> 2.2 </b> Lab: Phát hiện bất thường trong luồng nhấp chuột theo thời gian thực với Dịch vụ Quản lý Amazon cho Apache Flink
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/2-realtime/2.3-labglue/" title="Lab: ETL theo luồng với Glue" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/2-realtime/2.3-labglue/">
+           <b> 2.3 </b> Lab: ETL theo luồng với Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/3-ingestion/" title="Nhập dữ liệu với DMS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/3-ingestion/">
+           <b> 3. </b> Nhập dữ liệu với DMS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/3-ingestion/3.1-skipdms/" title="Lựa chọn 3: Bỏ qua DMS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/3-ingestion/3.1-skipdms/">
+           <b> 3.1 </b> Lựa chọn 3: Bỏ qua DMS
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/4-transformingdatawithglue/" title="Chuyển đổi dữ liệu với Glue" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/vi/4-transformingdatawithglue/">
+           <b> 4. </b> Chuyển đổi dữ liệu với Glue
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/4-transformingdatawithglue/4.1-datavalidationandetl/" title="Data Validation and ETL" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="/vi/4-transformingdatawithglue/4.1-datavalidationandetl/">
+           <b> 4.1 </b> Data Validation and ETL
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-queryandvisualize/" title="Truy vấn và Trực quan hóa" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-queryandvisualize/">
+           <b> 5. </b> Truy vấn và Trực quan hóa
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/5-queryandvisualize/5.1-athenaandquicksight/" title="Athena and Quicksight" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/5-queryandvisualize/5.1-athenaandquicksight/">
+           <b> 5.1 </b> Athena and Quicksight
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/7-gluedatabrew/" title="Glue DataBrew" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/7-gluedatabrew/">
+           <b> 6. </b> Glue DataBrew
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/7-gluedatabrew/7.1-prelab/" title="DataBrew Prelab" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/7-gluedatabrew/7.1-prelab/">
+           <b> 6.1 </b> DataBrew Prelab
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/vi/7-gluedatabrew/7.2-gluedatabrew/" title="Chuẩn bị dữ liệu với Glue DataBrew" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/vi/7-gluedatabrew/7.2-gluedatabrew/">
+           <b> 6.2 </b> Chuẩn bị dữ liệu với Glue DataBrew
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://awsstudygroup.com/"><i class='fab fa-aws'></i> AWS Study Group - Blog</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"><i class='fab fa-facebook'></i> AWS Study Group - Nhóm FB</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="http://baoandev.github.io/4-transformingdatawithglue/4.1-datavalidationandetl/">English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="http://baoandev.github.io/vi/4-transformingdatawithglue/4.1-datavalidationandetl/" selected>Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+    <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter" border="0" /></a> <br>
+    <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter" border="0" />
+
+</left>
+<left>
+    <br>
+    <br>
+    <b> Last Updated </b> <br>
+    <i><font color=orange>18-08-2024</font></i>
+</left>
+<left>
+    <br>
+    <br>
+    <b> Team </b> <br>
+
+    <i> 
+        <a href="https://www.linkedin.com/in/an-thai-6a1b16316/"  style="color:orange">Bảo An </a>
+    </i>
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/vi/'>Dữ liệu cùng AWS </a> > <a href='/vi/4-transformingdatawithglue/'>Chuyển đổi dữ liệu với Glue</a> > Data Validation and ETL
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+        <li><a href="#xác-nhận-bạn-có-thể-thấy-các-bảng">Xác nhận bạn có thể thấy các bảng</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Data Validation and ETL
+            </h1>
+          
+
+        
+
+
+
+	<h4 id="tạo-glue-crawler-để-tải-toàn-bộ-dữ-liệu-ban-đầu">Tạo Glue Crawler để tải toàn bộ dữ liệu ban đầu</h4>
+<ol>
+<li>
+<p>Truy cập vào AWS Glue Console.</p>
+</li>
+<li>
+<p>Trên menu AWS Glue, dưới mục &lsquo;Data Catalog&rsquo;, chọn <strong>Crawlers</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0002-transdata.png"></p>
+</li>
+<li>
+<p>Nhấn <strong>Create crawler</strong>.</p>
+</li>
+<li>
+<p>Nhập <strong>glue-lab-crawler</strong> làm tên crawler cho lần tải dữ liệu ban đầu.</p>
+</li>
+<li>
+<p>Tùy chọn: Nhập mô tả. Mô tả này nên rõ ràng và dễ nhận biết, sau đó nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0003-transdata.png"></p>
+</li>
+<li>
+<p>Dưới mục <strong>Choose data sources and classifiers</strong>, chọn <strong>Not yet</strong> và nhấn <strong>Add a data source</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0004-transdata.png"></p>
+</li>
+<li>
+<p>Trên trang <strong>Add a data store</strong>, thực hiện các lựa chọn sau:</p>
+<ul>
+<li>Đối với <strong>Data source</strong>, nhấn vào hộp thả xuống và chọn <strong>S3</strong>.</li>
+<li>Đối với <strong>Location of S3 data</strong>, chọn <strong>In this account</strong>.</li>
+<li>Đối với <strong>S3 path</strong>, duyệt đến thư mục đích lưu trữ tệp CSV, ví dụ: <code>s3://xxx-dmslabs3bucket-xxx/tickets/</code>.</li>
+<li>Để các tham số khác ở chế độ mặc định.</li>
+<li>Nhấn <strong>Add an S3 data source</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0005-transdata.png"></p>
+</li>
+<li>
+<p>Trên trang <strong>Configure security settings</strong>, chọn:</p>
+<ul>
+<li>Dưới mục <strong>Existing IAM role</strong>, chọn <code>&lt;stackname&gt;-GlueLabRole-&lt;RandomString&gt;</code> đã được tạo sẵn cho bạn. Ví dụ: “mod-3fccddd123456789-GlueLabRole-ZOQDII7JTBUM”.</li>
+</ul>
+</li>
+<li>
+<p>Nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0006-transdata.png"></p>
+</li>
+<li>
+<p>Trên trang <strong>Set output and scheduling</strong>, dưới mục <strong>Target database</strong>, nhấn <strong>Add database</strong> để mở một tab khác.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0007-transdata.png"></p>
+</li>
+<li>
+<p>Nhập <strong>ticketdata</strong> làm tên cơ sở dữ liệu và nhấn <strong>Create database</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0008-transdata.png"></p>
+</li>
+<li>
+<p>Quay lại trang <strong>Set output and scheduling</strong>:</p>
+<ul>
+<li>Chọn <strong>Target database</strong> là <strong>ticketdata</strong>. Nhấn nút làm mới ngay cạnh danh sách thả xuống để đảm bảo cơ sở dữ liệu mới tạo xuất hiện.</li>
+<li>Đối với <strong>Prefix added to tables (optional)</strong>, để trống.</li>
+<li>Dưới mục <strong>Crawler schedule</strong>, chọn tần suất là <strong>On demand</strong>.</li>
+<li>Nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/0009-transdata.png"></li>
+</ul>
+</li>
+<li>
+<p>Xem lại thông tin và nhấn <strong>Create crawler</strong>. Crawler bây giờ đã sẵn sàng để chạy.</p>
+</li>
+<li>
+<p>Chạy Crawler bằng cách nhấn vào nút <strong>Run crawler</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00010-transdata.png"></p>
+<p>Crawler sẽ thay đổi trạng thái từ <strong>Running</strong> sang <strong>Stopping</strong>, đợi đến khi crawler trở về trạng thái <strong>Ready</strong> (quá trình này sẽ mất vài phút). Bạn có thể thấy rằng nó đã tạo ra 15 bảng.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00011-transdata.png"></p>
+</li>
+<li>
+<p>Trong bảng điều khiển điều hướng AWS Glue, dưới mục <strong>Data Catalog</strong>, nhấn <strong>Databases → Tables</strong>. Bạn cũng có thể nhấn vào cơ sở dữ liệu <strong>ticketdata</strong> để duyệt các bảng.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00012-transdata.png"></p>
+</li>
+</ol>
+<h4 id="bài-tập-xác-thực-dữ-liệu">Bài tập Xác thực Dữ liệu</h4>
+<ol>
+<li>Trong phần Tables của cơ sở dữ liệu ticketdata, nhấn vào bảng person.</li>
+</ol>
+<p>Bạn có thể nhận thấy rằng một số bảng (như bảng person) có tiêu đề cột là col0, col1, col2, col3. Khi không có tiêu đề hoặc crawler không thể xác định loại tiêu đề, các tiêu đề cột mặc định sẽ được chỉ định.</p>
+<p>Bài tập này sử dụng bảng person để minh họa cách giải quyết vấn đề này.</p>
+<ol start="2">
+<li>
+<p>Nhấn vào tùy chọn Edit Schema.
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00013-transdata.png"></p>
+</li>
+<li>
+<p>Trong phần Edit Schema, chọn hàng cho col0 (tên cột) và nhấn Edit.
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00014-transdata.png"></p>
+</li>
+</ol>
+<p>Nhập id làm tên cột và nhấn Save.</p>
+<p><img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00015-transdata.png">
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00016-transdata.png"></p>
+<p>Lặp lại các bước trên để đổi tên các cột còn lại thành full_name, last_name, và first_name theo hình minh họa sau:
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00017-transdata.png"></p>
+<ol start="4">
+<li>Nhấn Save as new table version.</li>
+</ol>
+<h4 id="bài-tập-etl-dữ-liệu">Bài tập ETL Dữ liệu</h4>
+<p>Điều kiện tiên quyết: Để lưu trữ dữ liệu đã xử lý ở định dạng parquet, bạn cần tạo một vị trí thư mục mới cho mỗi bảng, ví dụ, đường dẫn đầy đủ cho bảng sport_team sẽ là s3://&lt;s3_bucket_name&gt;/tickets/dms_parquet/sport_team.</p>
+<p>Glue sẽ tự động tạo thư mục mới dựa trên đường dẫn đầy đủ mà bạn nhập, như ví dụ trên. Vui lòng tham khảo hướng dẫn sử dụng để biết cách tạo thư mục thủ công trong bucket S3.</p>
+<ol>
+<li>
+<p>Trong bảng điều hướng bên trái, nhấn vào <strong>ETL jobs</strong>.</p>
+</li>
+<li>
+<p>Nhấn vào <strong>“Visual ETL”</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00018-transdata.png"></p>
+</li>
+<li>
+<p>Chọn <strong>Amazon S3</strong> từ danh sách <strong>Sources</strong> để thêm một nút <strong>Data source - S3 bucket</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00019-transdata.png"></p>
+</li>
+<li>
+<p>Chọn nút <strong>Data source - S3 bucket</strong> để hiển thị các thuộc tính của nguồn dữ liệu.</p>
+</li>
+<li>
+<p>Trong bảng điều khiển bên phải, dưới mục <strong>Data source properties - S3</strong>, chọn <strong>Data Catalog table</strong> và chọn cơ sở dữ liệu <strong>ticketdata</strong> từ danh sách thả xuống. Đối với <strong>Table</strong>, chọn bảng <strong>sport_team</strong>.</p>
+</li>
+<li>
+<p>Nhấn vào nút <strong>+</strong> và chọn <strong>Change Schema</strong> từ danh sách <strong>Transforms</strong> để thêm một nút <strong>Transform - Change Schema</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00020-transdata.png"></p>
+</li>
+<li>
+<p>Chọn nút <strong>Transform - Change Schema</strong> để hiển thị các thuộc tính. Trong bảng <strong>Transform</strong> bên phải, thay đổi kiểu dữ liệu của cột <strong>id</strong> thành <strong>double</strong> trong danh sách thả xuống.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00021-transdata.png"></p>
+</li>
+<li>
+<p>Nhấn vào nút <strong>+</strong> và chọn <strong>Amazon S3</strong> từ danh sách <strong>Targets</strong> để thêm một nút <strong>Data target - S3 bucket</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00022-transdata.png"></p>
+</li>
+<li>
+<p>Chọn nút <strong>Data target - S3 bucket</strong> để hiển thị các thuộc tính. Trong bảng điều khiển bên phải, thay đổi <strong>Format</strong> thành <strong>Parquet</strong> trong danh sách thả xuống. Dưới <strong>Compression Type</strong>, chọn <strong>Uncompressed</strong> từ danh sách thả xuống.</p>
+</li>
+<li>
+<p>Dưới mục <strong>S3 Target Location</strong>, chọn <strong>Browse S3</strong>, duyệt đến bucket <strong>mod-xxx-dmslabs3bucket-xxx</strong>, chọn mục <strong>tickets</strong> và nhấn <strong>Choose</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00023-transdata.png"></p>
+</li>
+<li>
+<p>Trong hộp văn bản, thêm <strong>dms_parquet/sport_team/</strong> vào cuối URL S3. Đường dẫn nên giống với <code>s3://mod-xxx-dmslabs3bucket-xxx/tickets/dms_parquet/sport_team/</code> - đừng quên dấu <strong>/</strong> ở cuối. Công việc này sẽ tự động tạo thư mục.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00024-transdata.png"></p>
+</li>
+<li>
+<p>Cuối cùng, chọn tab <strong>Job details</strong> ở trên cùng. Nhập <strong>Glue-Lab-SportTeamParquet</strong> vào trường <strong>Name</strong>.</p>
+</li>
+<li>
+<p>Đối với <strong>IAM Role</strong>, chọn vai trò có tên tương tự <strong>mod-xxx-GlueLabRole-xxx</strong>.</p>
+</li>
+<li>
+<p>Cuộn xuống dưới trang và trong mục <strong>Job bookmark</strong>, chọn <strong>Disable</strong> từ danh sách thả xuống. Bạn có thể thử tính năng bookmark sau trong bài lab này.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00025-transdata.png"></p>
+</li>
+<li>
+<p>Nhấn nút <strong>Save</strong> ở góc trên bên phải để tạo công việc.</p>
+</li>
+<li>
+<p>Khi bạn thấy thông báo <strong>Successfully created job</strong> trên banner, nhấn nút <strong>Run</strong> để bắt đầu công việc.</p>
+</li>
+<li>
+<p>Chọn <strong>Jobs</strong> từ bảng điều hướng bên trái để xem danh sách các công việc của bạn.</p>
+</li>
+<li>
+<p>Chọn <strong>Monitoring</strong> từ bảng điều hướng bên trái để xem các công việc đang chạy, tỷ lệ thành công/thất bại và các số liệu thống kê khác.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00026-transdata.png"></p>
+</li>
+<li>
+<p>Cuộn xuống danh sách <strong>Job runs</strong> để xác minh rằng công việc ETL đã hoàn thành thành công. Quá trình này sẽ mất khoảng 1 phút để hoàn thành.</p>
+</li>
+<li>
+<p>Chúng ta cần lặp lại quy trình này cho 4 công việc khác, để chuyển đổi các bảng <strong>sport_location</strong>, <strong>sporting_event</strong>, <strong>sporting_event_ticket</strong>, và <strong>person</strong>.</p>
+</li>
+</ol>
+<p>Trong quá trình này, chúng ta sẽ cần phải chỉnh sửa các kiểu dữ liệu cột khác nhau. Chúng ta có thể lặp lại quy trình ở trên cho mỗi bảng, hoặc có thể sao chép công việc đầu tiên và cập nhật các chi tiết. Các bước dưới đây mô tả cách sao chép công việc - nếu bạn tạo thủ công mỗi lần, hãy làm theo các bước trên nhưng đảm bảo bạn sử dụng các giá trị được cập nhật từ các bảng dưới đây.</p>
+<ol>
+<li>
+<p>Quay lại menu <strong>Jobs</strong>, và chọn công việc <strong>Glue-Lab-SportsTeamParquet</strong> bằng cách nhấp vào ô checkbox bên cạnh tên.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00027-transdata.png"></p>
+</li>
+<li>
+<p>Dưới mục <strong>Actions</strong> trong danh sách thả xuống, chọn <strong>Clone job</strong>. Cập nhật công việc theo các bảng dưới đây, sau đó nhấn <strong>Save</strong> và <strong>Run</strong>.</p>
+</li>
+</ol>
+<ul>
+<li>
+<p><strong>Sport_Location</strong>:</p>
+<p>Tạo công việc <strong>Glue-Lab-SportLocationParquet</strong> với các thuộc tính sau:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Task / Action</th>
+<th>Attribute</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data source - S3 bucket</strong> node</td>
+<td>Database</td>
+<td>ticketdata</td>
+</tr>
+<tr>
+<td></td>
+<td>Table</td>
+<td>sport_location</td>
+</tr>
+<tr>
+<td><strong>Transform - ApplyMapping</strong> node</td>
+<td>Schema transformations</td>
+<td>None</td>
+</tr>
+<tr>
+<td><strong>Data target - S3 bucket</strong> node</td>
+<td>Format</td>
+<td>Parquet</td>
+</tr>
+<tr>
+<td></td>
+<td>Compression Type</td>
+<td>Uncompressed</td>
+</tr>
+<tr>
+<td></td>
+<td>S3 target path</td>
+<td>tickets/dms_parquet/sport_location/</td>
+</tr>
+<tr>
+<td><strong>Job details tab</strong></td>
+<td>Job Name</td>
+<td>Glue-Lab-SportLocationParquet</td>
+</tr>
+<tr>
+<td></td>
+<td>IAM Role</td>
+<td>xxx-GlueLabRole-xxx</td>
+</tr>
+<tr>
+<td></td>
+<td>Job bookmark</td>
+<td>Disable</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>Sporting_Event</strong>:</p>
+<p>Tạo công việc <strong>Glue-Lab-SportingEventParquet</strong> với các thuộc tính sau:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Task / Action</th>
+<th>Attribute</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data source - S3 bucket</strong> node</td>
+<td>Database</td>
+<td>ticketdata</td>
+</tr>
+<tr>
+<td></td>
+<td>Table</td>
+<td>sporting_event</td>
+</tr>
+<tr>
+<td><strong>Transform - ApplyMapping</strong> node</td>
+<td>Schema transformations</td>
+<td>column “start_date_time” =&gt; TIMESTAMP</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>column “start_date” =&gt; DATE</td>
+</tr>
+<tr>
+<td><strong>Data target - S3 bucket</strong> node</td>
+<td>Format</td>
+<td>Parquet</td>
+</tr>
+<tr>
+<td></td>
+<td>Compression Type</td>
+<td>Uncompressed</td>
+</tr>
+<tr>
+<td></td>
+<td>S3 target path</td>
+<td>tickets/dms_parquet/sporting_event/</td>
+</tr>
+<tr>
+<td><strong>Job details tab</strong></td>
+<td>Job Name</td>
+<td>Glue-Lab-SportingEventParquet</td>
+</tr>
+<tr>
+<td></td>
+<td>IAM Role</td>
+<td>xxx-GlueLabRole-xxx</td>
+</tr>
+<tr>
+<td></td>
+<td>Job bookmark</td>
+<td>Disable</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>Sporting_Event_Ticket</strong>:</p>
+<p>Tạo công việc <strong>Glue-Lab-SportingEventTicketParquet</strong> với các thuộc tính sau:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Task / Action</th>
+<th>Attribute</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data source - S3 bucket</strong> node</td>
+<td>Database</td>
+<td>ticketdata</td>
+</tr>
+<tr>
+<td></td>
+<td>Table</td>
+<td>sporting_event_ticket</td>
+</tr>
+<tr>
+<td><strong>Transform - ApplyMapping</strong> node</td>
+<td>Schema transformations</td>
+<td>column “id” =&gt; DOUBLE</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>column “sporting_event_id” =&gt; DOUBLE</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>column “ticketholder_id” =&gt; DOUBLE</td>
+</tr>
+<tr>
+<td><strong>Data target - S3 bucket</strong> node</td>
+<td>Format</td>
+<td>Parquet</td>
+</tr>
+<tr>
+<td></td>
+<td>Compression Type</td>
+<td>Uncompressed</td>
+</tr>
+<tr>
+<td></td>
+<td>S3 target path</td>
+<td>tickets/dms_parquet/sporting_event_ticket/</td>
+</tr>
+<tr>
+<td><strong>Job details tab</strong></td>
+<td>Job Name</td>
+<td>Glue-Lab-SportingEventTicketParquet</td>
+</tr>
+<tr>
+<td></td>
+<td>IAM Role</td>
+<td>xxx-GlueLabRole-xxx</td>
+</tr>
+<tr>
+<td></td>
+<td>Job bookmark</td>
+<td>Disable</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>Person</strong>:</p>
+<p>Tạo công việc <strong>Glue-Lab-PersonParquet</strong> với các thuộc tính sau:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Task / Action</th>
+<th>Attribute</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data source - S3 bucket</strong> node</td>
+<td>Database</td>
+<td>ticketdata</td>
+</tr>
+<tr>
+<td></td>
+<td>Table</td>
+<td>person</td>
+</tr>
+<tr>
+<td><strong>Transform - ApplyMapping</strong> node</td>
+<td>Schema transformations</td>
+<td>column “id” =&gt; DOUBLE</td>
+</tr>
+<tr>
+<td><strong>Data target - S3 bucket</strong> node</td>
+<td>Format</td>
+<td>Parquet</td>
+</tr>
+<tr>
+<td></td>
+<td>Compression Type</td>
+<td>Uncompressed</td>
+</tr>
+<tr>
+<td></td>
+<td>S3 target path</td>
+<td>tickets/dms_parquet/person/</td>
+</tr>
+<tr>
+<td><strong>Job details tab</strong></td>
+<td>Job Name</td>
+<td>Glue-Lab-PersonParquet</td>
+</tr>
+<tr>
+<td></td>
+<td>IAM Role</td>
+<td>xxx-GlueLabRole-xxx</td>
+</tr>
+<tr>
+<td></td>
+<td>Job bookmark</td>
+<td>Disable</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00028-transdata.png"></p>
+<h4 id="tạo-glue-crawler-cho-các-tệp-parquet">Tạo Glue Crawler cho Các Tệp Parquet</h4>
+<ol>
+<li>
+<p>Trong menu điều hướng Glue, dưới mục <strong>Data Catalog</strong> chọn <strong>Crawlers</strong>. Nhấn <strong>Create crawler</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00029-transdata.png"></p>
+</li>
+<li>
+<p>Đối với <strong>Crawler name</strong>, nhập <strong>glue-lab-parquet-crawler</strong> và nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00030-transdata.png"></p>
+</li>
+<li>
+<p>Trong màn hình <strong>Add data store</strong>:</p>
+<ul>
+<li>Đối với <strong>Choose a data store</strong>, chọn <strong>S3</strong>.</li>
+<li>Đối với <strong>Location of S3 data</strong>, chọn <strong>In this account</strong>.</li>
+<li>Đối với <strong>S3 path</strong>, chỉ định đường dẫn S3 (Thư mục Parquet chính) chứa các tệp parquet lồng ghép, ví dụ: <code>s3://xxx-dmslabs3bucket-xxx/tickets/dms_parquet/</code></li>
+<li>Giữ tất cả các tham số khác ở mặc định.</li>
+<li>Nhấn <strong>Add an S3 data source</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00031-transdata.png"><br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00032-transdata.png"></li>
+</ul>
+</li>
+<li>
+<p>Trong màn hình tiếp theo <strong>Choose data sources and classifiers</strong>, nhấn <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Trên trang <strong>Configure security settings</strong>, chọn <strong>Choose an existing IAM role</strong>.</p>
+<ul>
+<li>Đối với <strong>IAM role</strong>, chọn vai trò đã tồn tại có tên giống như <strong>xxx-GlueLabRole-xxx</strong> và</li>
+<li>Nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00033-transdata.png"></li>
+</ul>
+</li>
+<li>
+<p>Trên trang <strong>Set output and scheduling</strong>,</p>
+<ul>
+<li>Dưới mục <strong>Target database</strong>, chọn cơ sở dữ liệu bạn đã tạo trước đó, ví dụ: <strong>ticketdata</strong>.</li>
+<li>Đối với <strong>Prefix added to tables (optional)</strong>, nhập <strong>parquet_</strong>.</li>
+<li>Đối với <strong>Crawler schedule</strong>, chọn <strong>On Demand</strong> và nhấn <strong>Next</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00034-transdata.png"></li>
+</ul>
+</li>
+<li>
+<p>Xem lại trang tổng kết và nhấn <strong>Create crawler</strong>.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00035-transdata.png"></p>
+</li>
+<li>
+<p>Nhấn <strong>Run Crawler</strong>. Khi crawler của bạn đã hoàn tất, bạn sẽ thấy các bảng đã được thêm vào, tùy thuộc vào số lượng chuyển đổi ETL parquet mà bạn đã thiết lập ở phần trước.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00036-transdata.png"><br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00037-transdata.png"></p>
+</li>
+</ol>
+<h3 id="xác-nhận-bạn-có-thể-thấy-các-bảng">Xác nhận bạn có thể thấy các bảng</h3>
+<ol start="9">
+<li>
+<p>Trong bảng điều hướng bên trái, nhấn vào <strong>Tables</strong>.</p>
+</li>
+<li>
+<p>Thêm bộ lọc <strong>parquet</strong> cho <strong>Classification</strong> để hiển thị các bảng mới được tạo.<br>
+<img alt="Data Validation and ETL" src="/images/4.transformingdatawithglue/00038-transdata.png"></p>
+</li>
+</ol>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/vi/4-transformingdatawithglue/" title="Chuyển đổi dữ liệu với Glue"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/vi/5-queryandvisualize/" title="Truy vấn và Trực quan hóa" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1726578021"></script>
+    <script src="/js/perfect-scrollbar.min.js?1726578021"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1726578021"></script>
+    <script src="/js/jquery.sticky.js?1726578021"></script>
+    <script src="/js/featherlight.min.js?1726578021"></script>
+    <script src="/js/highlight.pack.js?1726578021"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1726578021"></script>
+    <script src="/js/learn.js?1726578021"></script>
+    <script src="/js/hugo-learn.js?1726578021"></script>
+
+    <link href="/mermaid/mermaid.css?1726578021" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1726578021"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data preparation with Glue DataBrew on Bao An Thai</title>
+    <link>http://baoandev.github.io/7-gluedatabrew/7.2-gluedatabrew/</link>
+    <description>Recent content in Data preparation with Glue DataBrew on Bao An Thai</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <atom:link href="http://baoandev.github.io/7-gluedatabrew/7.2-gluedatabrew/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>
